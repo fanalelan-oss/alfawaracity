@@ -5,6 +5,7 @@ import { useHotelStore } from "@/lib/store";
 import { roomsData } from "@/data/roomsData";
 import { hotelConfig } from "@/data/hotelConfig";
 import { createBookingConfirmationMessage, generateWhatsAppLink } from "@/lib/whatsappService";
+import { formatNumber } from "@/lib/formatters";
 import { 
   CreditCard, 
   Printer, 
@@ -97,7 +98,7 @@ export default function CashierPOS() {
               >
                 {roomsData.map(u => (
                   <option key={u.id} value={u.id}>
-                    {u.name} - ({u.pricePerDayYER.toLocaleString()} ريال/يوم)
+                    {u.name} - ({formatNumber(u.pricePerDayYER)} ريال/يوم)
                   </option>
                 ))}
               </select>
@@ -205,7 +206,7 @@ export default function CashierPOS() {
             <div>
               <div className="text-xs text-slate-400">إجمالي الحساب المستحق:</div>
               <div className="text-2xl font-black text-amber-400">
-                {totalAmountYER.toLocaleString()} <span className="text-sm font-normal text-slate-300">ريال يمني</span>
+                {formatNumber(totalAmountYER)} <span className="text-sm font-normal text-slate-300">ريال يمني</span>
               </div>
             </div>
 
@@ -268,7 +269,7 @@ export default function CashierPOS() {
 
               <div className="pt-2 border-t border-dashed border-slate-300 flex justify-between text-sm font-black">
                 <span>المبلغ المدفوع:</span>
-                <span>{receiptBooking.totalAmountYER.toLocaleString()} YER</span>
+                <span>{formatNumber(receiptBooking.totalAmountYER)} YER</span>
               </div>
 
               <div className="text-center pt-2 text-[9px] text-slate-500">

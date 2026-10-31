@@ -7,6 +7,7 @@ import RoomStatusGrid from "@/components/admin/RoomStatusGrid";
 import CashierPOS from "@/components/admin/CashierPOS";
 import BookingsTable from "@/components/admin/BookingsTable";
 import WhatsAppQRManager from "@/components/admin/WhatsAppQRManager";
+import { formatNumber } from "@/lib/formatters";
 import { 
   ShieldCheck, 
   BedDouble, 
@@ -115,7 +116,7 @@ export default function AdminPage() {
             <div>
               <div className="text-xs text-slate-400 font-medium">إجمالي الإيرادات المقبوضة</div>
               <div className="text-2xl font-black text-amber-400 mt-1">
-                {totalRevenueYER.toLocaleString()}
+                {formatNumber(totalRevenueYER)}
               </div>
               <div className="text-[11px] text-slate-400 mt-0.5">ريال يمني (كاش ومحافظ)</div>
             </div>

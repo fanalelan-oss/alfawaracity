@@ -6,6 +6,7 @@ import { useHotelStore } from "@/lib/store";
 import { BookingRecord } from "@/data/mockBookings";
 import { hotelConfig } from "@/data/hotelConfig";
 import { createBookingConfirmationMessage, generateWhatsAppLink } from "@/lib/whatsappService";
+import { formatNumber } from "@/lib/formatters";
 import { 
   CheckCircle2, 
   Clock, 
@@ -83,7 +84,7 @@ export default function BookingsTable() {
                   </div>
                 </td>
                 <td className="py-3 px-3 font-bold text-amber-300 whitespace-nowrap">
-                  {b.totalAmountYER.toLocaleString()} YER
+                  {formatNumber(b.totalAmountYER)} YER
                 </td>
                 <td className="py-3 px-3">
                   <div className="flex items-center gap-1.5">

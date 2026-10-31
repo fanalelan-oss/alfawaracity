@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { formatNumber } from "@/lib/formatters";
 import { RoomUnit, roomsData } from "@/data/roomsData";
 import RoomDetailModal from "./RoomDetailModal";
 import { 
@@ -137,8 +138,8 @@ export default function RoomsSection() {
               <div className="text-[11px] text-slate-400">يبدأ السعر من:</div>
               <div className="text-xl sm:text-2xl font-black text-amber-400">
                 {activeUnit.bookingType === "hourly"
-                  ? `${activeUnit.pricePerHourYER.toLocaleString()} ريال/ساعة`
-                  : `${activeUnit.pricePerDayYER.toLocaleString()} ريال/يوم`}
+                  ? `${formatNumber(activeUnit.pricePerHourYER)} ريال/ساعة`
+                  : `${formatNumber(activeUnit.pricePerDayYER)} ريال/يوم`}
               </div>
             </div>
 

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { formatNumber } from "@/lib/formatters";
 import { RoomUnit } from "@/data/roomsData";
 import { hotelConfig } from "@/data/hotelConfig";
 import { useHotelStore } from "@/lib/store";
@@ -172,7 +173,7 @@ export default function RoomDetailModal({ unit, onClose }: RoomDetailModalProps)
                           : "bg-[#141d2b] text-slate-400 hover:text-white"
                       }`}
                     >
-                      حجز باليوم ({unit.pricePerDayYER.toLocaleString()} ريال/يوم)
+                      حجز باليوم ({formatNumber(unit.pricePerDayYER)} ريال/يوم)
                     </button>
                     <button
                       type="button"
@@ -183,7 +184,7 @@ export default function RoomDetailModal({ unit, onClose }: RoomDetailModalProps)
                           : "bg-[#141d2b] text-slate-400 hover:text-white"
                       }`}
                     >
-                      حجز بالساعة ({unit.pricePerHourYER.toLocaleString()} ريال/ساعة)
+                      حجز بالساعة ({formatNumber(unit.pricePerHourYER)} ريال/ساعة)
                     </button>
                   </div>
                 )}
@@ -281,7 +282,7 @@ export default function RoomDetailModal({ unit, onClose }: RoomDetailModalProps)
                   <div>
                     <div className="text-xs text-slate-400">الإجمالي المستحق:</div>
                     <div className="text-xl font-extrabold text-amber-300">
-                      {totalPriceYER.toLocaleString()} <span className="text-xs font-normal text-slate-300">ريال يمني</span>
+                      {formatNumber(totalPriceYER)} <span className="text-xs font-normal text-slate-300">ريال يمني</span>
                       <span className="text-xs text-slate-400 mr-2">≈ ({approxSAR} ريال سعودي)</span>
                     </div>
                   </div>
