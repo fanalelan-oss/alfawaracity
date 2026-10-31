@@ -1,0 +1,90 @@
+=== CONTACTS ===
+phones: ['https://wa.me/784555525', 'https://wa.me/967784555525', 'tel:+967735000060', 'tel:+967735000061', 'tel:+967784555515']
+emails: []
+socials: []
+
+=== PAGES & TEXTS ===
+
+--- URL: https://alfawaracity.com/ ---
+Title: مدينة الفوارة
+  • مدينة الفوارة((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","light",null,["light","dark"],null,true,true)
+  • الرئيسية
+  • تسجيل الدخول
+  • إنشاء حساب
+  • open navigation menu
+  • اقامة فاخرة في احضان الطبيعة
+  • مرحبًا بكم في فندق وشاليهات مدينة الفوارة السياحية،
+  • نقدم لكم غرف عائلية VIP وغرف شبابية بتصاميم عصرية، وسط بيئة طبيعية خلابة ومياه كبريتية صحية، مع إطلالات ساحرة واجنحه ملكيه وشاليهات شبابيه وعائليه وحديقة العاب للأطفال ومجالس شبابية وجلسات للمناسبات ومسابح للنساء والرجال ومسابح خاصة
+  • مكان واحد يجمع المتعة، الهدوء ، والخصوصيـة لتعيشوا تجربة إقامة متكاملة لا تُنسى حيث تلتقي الراحة بجمال الطبيعة.
+  • احجز الآن
+  • غرفة نوم عائلي
+  • مجلس
+  • اشخاص
+  • جاكوزي
+  • مسبح عام
+  • وجهتكم المثالية لبداية أجمل أيامكم معًا
+  • جناح عائلي 5 اشخاص
+  • متعة عائلية متكاملة بإطلالة مبهرة وتجارب استرخاء لا تُنسى
+  • غرفة نوم شبابي
+  • عدد الأسرة
+  • إقامة شبابية راقية تجمع الراحة ومتعة الجاكوزي
+  • مجلس كبير (50) شخص
+  • مجالس بإطلالة طبيعية هادئة تنبض بالراحة مع حوض كبير
+  • مجلس شبابي ( 20شخص)
+  • مجلس شبابي مع اثنين جاكوزيهات
+  • مجلس شبابي (30 شخص)
+  • مجلس حجم متوسط مع اثنين جاكوزيهات
+  • مجلس صغير (10) اشخاص
+  • مصمم للراحة واللمة الحلوة
+  • شاليهات - شبابي (نظام ساعتين)
+  • مسبح خاص
+  • تجربة شاليه متكاملة ليوم كامل تناسب الجميع
+  • مسابح عائلي - نظام ساعات
+  • مسابح عائلية نظام ساعات
+  • الحجز
+  • احجز إقامتك بسهولة خلال ثوانٍ
+  • الاسمرقم الهاتفعدد الضيوفالحسابات والمحافظ الالكترونية
+  • محفظة جيب
+  • 5907771
+  • كريمي ريال
+  • 3162933514
+  • كريمي دولار
+  • 3162981055
+  • كريمي سعودي
+  • 3163017015
+  • تحويل إلى حساب:
+  • 784555515
+  • تواصل معنا
+  • نحن هنا لخدمتك في أي استفسار أو حجز
+  • صنعـــاء - بلاد الـروس - جــــارف
+  • واتساب
+  • 784 5555 25
+  • اتصال
+  • 735 0000 60
+  • 784 5555 15
+  • 735 0000 61
+
+--- URL: https://alfawaracity.com/login ---
+Title: مدينة الفوارة
+  • مدينة الفوارة((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","light",null,["light","dark"],null,true,true)
+  • الرئيسية
+  • تسجيل الدخول
+  • إنشاء حساب
+  • open navigation menu
+  • فندق وشاليهات مدينة الفوارة السياحية
+  • البريد الالكترونيكلمة المرورتسجيل الدخولليس لديك حساب؟ انشاء حساب
+
+--- URL: https://alfawaracity.com/register ---
+Title: مدينة الفوارة
+  • مدينة الفوارة((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","light",null,["light","dark"],null,true,true)
+  • الرئيسية
+  • تسجيل الدخول
+  • إنشاء حساب
+  • open navigation menu
+  • فندق وشاليهات مدينة الفوارة السياحية
+  • الاسمرقم الموبايلالبريد الالكترونيكلمة المرورتاكيد كلمة المرور
+  • أوافق على سياسة الخصوصية
+  • لديك حساب؟ سجل الدخول
+
+--- URL: https://alfawaracity.com/favicon.ico ---
+Title: 
