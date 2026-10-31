@@ -10,9 +10,9 @@ import {
   Clock, 
   Calendar, 
   Check, 
-  ArrowLeft,
-  Waves,
-  ShieldCheck
+  ArrowLeft, 
+  Layers,
+  Image as ImageIcon
 } from "lucide-react";
 
 export default function RoomsSection() {
@@ -20,12 +20,13 @@ export default function RoomsSection() {
   const [selectedUnit, setSelectedUnit] = useState<RoomUnit | null>(null);
 
   const categories = [
-    { id: "all", label: "جميع الوحدات والمرافق" },
-    { id: "suite", label: "أجنحة ملكية عائلية VIP" },
-    { id: "chalet", label: "شاليهات خاصة ومسابح" },
-    { id: "majlis", label: "مجالس مناسبات وضيافة" },
-    { id: "pool", label: "مسابح كبريتية استشفائية" },
-    { id: "youth", label: "غرف شبابية" }
+    { id: "all", label: "جميع الوحدات والمرافق (9 أقسام)" },
+    { id: "suite", label: "جناح عائلي 5 أشخاص" },
+    { id: "family_room", label: "غرفة نوم عائلي VIP" },
+    { id: "chalet", label: "شاليهات خاصة (ساعات/يوم)" },
+    { id: "majlis", label: "مجالس مناسبات (10 - 50 شخص)" },
+    { id: "youth_room", label: "غرف شبابية مع جاكوزي" },
+    { id: "pool", label: "مسابح كبريتية عائلية" }
   ];
 
   const filteredUnits = selectedCategory === "all" 
@@ -38,13 +39,13 @@ export default function RoomsSection() {
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 text-xs font-bold">
           <Sparkles className="w-3.5 h-3.5" />
-          إقامات تناسب كل الأذواق والعوائل والشباب
+          كافة الصور حقيقية ومصنفة بدقة من موقع فندق الفوارة
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          اختر مكانك المفضل في مدينة الفوارة
+          الأجنحة، الشاليهات، والمجالس المتاحة
         </h2>
-        <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-          جميع الوحدات مجهزة بمياه كبريتية دافئة تنبع من حمام جارف الطبيعي، مع خصوصية تامة وخدمة متواصلة طوال فترة إقامتك.
+        <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          تم تصنيف كل صورة ووضعها في قسمها المناسب تماماً مع مطابقة المواصفات والأسعار بالساعة وباليوم.
         </p>
       </div>
 
@@ -73,16 +74,22 @@ export default function RoomsSection() {
             className="group relative bg-[#0f1622] border border-[#1f2a3c] rounded-3xl overflow-hidden hover:border-amber-500/50 hover:shadow-2xl hover:shadow-amber-950/20 transition-all flex flex-col"
           >
             {/* Image Box */}
-            <div className="relative w-full h-56 overflow-hidden bg-slate-900">
+            <div className="relative w-full h-60 overflow-hidden bg-slate-900">
               <Image
-                src={unit.images[0] || "/images/img_028_u8dd32ak3clce4sj1pyeapqc.jpeg"}
+                src={unit.images[0] || "/images/units/hero_vip_suite.jpeg"}
                 alt={unit.name}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0f1622] via-transparent to-black/30" />
 
-              {/* Badges */}
+              {/* Photos Count Badge */}
+              <div className="absolute top-3 left-3 bg-[#080c10]/80 backdrop-blur-md text-slate-300 border border-white/20 px-2.5 py-1 rounded-full text-[11px] font-semibold flex items-center gap-1">
+                <ImageIcon className="w-3 h-3 text-amber-400" />
+                <span>{unit.images.length} صور مصنفة</span>
+              </div>
+
+              {/* Capacity Badge */}
               <div className="absolute top-3 right-3 flex items-center gap-1.5">
                 <span className="bg-[#080c10]/80 backdrop-blur-md text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                   <Users className="w-3 h-3" />
@@ -91,7 +98,7 @@ export default function RoomsSection() {
               </div>
 
               {unit.bookingType === "hourly" && (
-                <div className="absolute top-3 left-3 bg-cyan-950/90 border border-cyan-500/40 text-cyan-300 text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                <div className="absolute bottom-3 left-3 bg-cyan-950/90 border border-cyan-500/40 text-cyan-300 text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                   <Clock className="w-3 h-3" />
                   نظام ساعات
                 </div>
@@ -101,7 +108,10 @@ export default function RoomsSection() {
             {/* Content */}
             <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
               <div className="space-y-2">
-                <h3 className="font-bold text-lg text-white group-hover:text-amber-300 transition-colors">
+                <div className="text-[11px] text-amber-400 font-medium">
+                  {unit.originalSectionTitle}
+                </div>
+                <h3 className="font-bold text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors">
                   {unit.name}
                 </h3>
                 <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
@@ -134,7 +144,7 @@ export default function RoomsSection() {
                   onClick={() => setSelectedUnit(unit)}
                   className="px-4 py-2.5 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold text-xs rounded-xl shadow-md shadow-amber-500/10 flex items-center gap-1.5 transition-all"
                 >
-                  <span>عرض وحجز</span>
+                  <span>استعراض وحجز</span>
                   <ArrowLeft className="w-3.5 h-3.5" />
                 </button>
               </div>

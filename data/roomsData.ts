@@ -1,7 +1,8 @@
 export interface RoomUnit {
   id: string;
   name: string;
-  category: "suite" | "youth" | "majlis" | "chalet" | "pool";
+  originalSectionTitle: string;
+  category: "suite" | "family_room" | "youth_room" | "majlis" | "chalet" | "pool";
   capacity: string;
   pricePerDayYER: number;
   pricePerHourYER: number;
@@ -17,28 +18,32 @@ export interface RoomUnit {
 
 export const roomsData: RoomUnit[] = [
   {
-    id: "suite-royal-vip",
-    name: "الجناح الملكي العائلي VIP (5 أشخاص)",
+    id: "suite-family-5",
+    name: "جناح عائلي فاخر (5 أشخاص)",
+    originalSectionTitle: "جناح عائلي 5 اشخاص",
     category: "suite",
     capacity: "5 إلى 7 أشخاص",
     pricePerDayYER: 65000,
     pricePerHourYER: 12000,
     priceSAR: 450,
     bookingType: "both",
-    description: "جناح عائلي فسيح ومؤثث بأعلى درجات الراحة، يحتوي على غرفتي نوم منفصلتين، صالة جلوس بإطلالة على الطبيعة، وجاكوزي خاص مع مياه كبريتية دافئة.",
+    description: "متعة عائلية متكاملة بإطلالة مبهرة على جبال جارف وتجارب استرخاء لا تُنسى. يضم غرفتي نوم منفصلتين، صالة معيشة فسيحة، وجاكوزي خاص بمياه كبريتية استشفائية.",
     amenities: [
-      "جاكوزي خاص بمياه كبريتية",
-      "صالة جلوس واسعة ومؤثثة",
-      "إطلالة بانورامية على جبال جارف",
-      "شاشة ذكية 65 بوصة وواي فاي مجاني",
-      "مطبخ تحضيري وثلاجة وغلاية",
-      "خدمة غرف ونظافة دورية"
+      "جاكوزي خاص بمياه كبريتية علاجية",
+      "غرفة نوم رئيسية + غرفة أطفال",
+      "صالة جلوس مفروشة بمدخل مستقل",
+      "شرفة بإطلالة بانورامية خلابة",
+      "مطبخ تحضيري متكامل وثلاجة",
+      "شبكة واي فاي عائلية سريعة"
     ],
     images: [
-      "/images/img_028_u8dd32ak3clce4sj1pyeapqc.jpeg",
-      "/images/img_013_ghgvkz3r7563hwwr1j2ka1px.jpeg",
-      "/images/img_014_hj50hs3gjw1dw7j83lcl2fnl.jpeg",
-      "/images/img_011_elrdx2vdjmw16j6guffpimed.jpeg"
+      "/images/units/suite_5_master_bedroom.jpeg",
+      "/images/units/suite_5_living_hall.jpeg",
+      "/images/units/suite_5_jacuzzi_bath.jpeg",
+      "/images/units/suite_5_balcony_view.jpeg",
+      "/images/units/suite_5_kids_room.jpeg",
+      "/images/units/suite_5_dining_kitchen.jpeg",
+      "/images/units/suite_5_panorama.jpeg"
     ],
     featured: true,
     sizeM2: 85,
@@ -46,25 +51,27 @@ export const roomsData: RoomUnit[] = [
   },
   {
     id: "room-family-vip",
-    name: "غرفة نوم عائلية VIP مع جاكوزي",
-    category: "suite",
+    name: "غرفة نوم عائلية VIP مع جاكوزي ومجلس",
+    originalSectionTitle: "غرفة نوم عائلي",
+    category: "family_room",
     capacity: "3 إلى 4 أشخاص",
     pricePerDayYER: 45000,
     pricePerHourYER: 8000,
-    priceSAR: 320,
+    priceSAR: 310,
     bookingType: "both",
-    description: "غرفة أنيقة للعائلات الصغيرة بتشطيبات راقية، سرير كينج مريح، حمام واسع بجاكوزي كبريتي استشفائي وخصوصية تامة.",
+    description: "وجهتكم المثالية لبداية أجمل أيامكم معاً. تشمل سرير ملكي كينج، جاكوزي دافئ بمياه كبريتية متجددة، صالة استراحة ملحقة، وإمكانية الدخول للمسبح العام.",
     amenities: [
-      "جاكوزي مياه كبريتية استشفائية",
-      "سرير ملكي مريح جداً",
-      "جلسة جانبية داخلية",
-      "تكييف وتدفئة وتلفزيون ذكي",
-      "دخول مجاني للمسابح العائلية"
+      "جاكوزي مياه كبريتية خاص بالغرفة",
+      "مجلس وجلسة داخلية مريحة",
+      "سرير كينج ملكي فاخر",
+      "شاشة ذكية وتكييف وتدفئة",
+      "دخول مجاني لمسابح المنتجع"
     ],
     images: [
-      "/images/img_031_uya3wnwiyto5apphzyas223u.jpeg",
-      "/images/img_036_xwa3pkj2bbt1b9f47xwzn4k4.jpeg",
-      "/images/img_021_mci00w3628j15kgal513jaba.jpeg"
+      "/images/units/family_room_bed.jpeg",
+      "/images/units/family_room_jacuzzi.jpeg",
+      "/images/units/family_room_lounge.jpeg",
+      "/images/units/family_room_view.jpeg"
     ],
     featured: true,
     sizeM2: 50,
@@ -72,25 +79,27 @@ export const roomsData: RoomUnit[] = [
   },
   {
     id: "chalet-private-hours",
-    name: "شاليه الشباب والعوائل الخاص (نظام ساعات / يوم)",
+    name: "شاليهات خاصة شبابية وعائلية (نظام ساعتين / يوم)",
+    originalSectionTitle: "شاليهات - شبابي (نظام ساعتين)",
     category: "chalet",
     capacity: "حتى 10 أشخاص",
     pricePerDayYER: 80000,
     pricePerHourYER: 15000,
     priceSAR: 550,
     bookingType: "both",
-    description: "شاليه خاص متكامل يضم مسبحاً كبريتياً مغلقاً وجلسة استراحة فخمة، حديقة صغيرة ومدخل مستقل تماماً لقضاء أمتع الأوقات والراحة التامة.",
+    description: "تجربة شاليه متكاملة ليوم كامل أو بنظام الساعات تناسب الجميع. مسبح كبريتي خاص مغلق، جلسة استراحة فخمة، حديقة وتراس مشمس وخصوصية مطلقة.",
     amenities: [
-      "مسبح كبريتي خاص دافئ",
-      "جلسة خارجية مع شواية باربكيو",
-      "صالة مكيفة ومجهزة",
-      "مطبخ متكامل للتحضير",
-      "موقف سيارات خاص ومظلل"
+      "مسبح خاص مغلق بمياه كبريتية دافئة",
+      "صالة استراحة وجلسة ترفيهية",
+      "تراس خارجي وجلسة مشمسة",
+      "مطبخ خدمة وباربكيو",
+      "مدخل مستقل وموقف خاص"
     ],
     images: [
-      "/images/img_022_o1lfj0q71zxo582r4o463i55.jpeg",
-      "/images/img_006_cg6frlfluigpv7lb6hbd6bdw.jpeg",
-      "/images/img_015_i1wjguywi3jubg7bdqa3qt3u.jpeg"
+      "/images/units/chalet_private_pool.jpeg",
+      "/images/units/chalet_pool_indoor.jpeg",
+      "/images/units/chalet_lounge.jpeg",
+      "/images/units/chalet_terrace.jpeg"
     ],
     featured: true,
     sizeM2: 120,
@@ -98,25 +107,26 @@ export const roomsData: RoomUnit[] = [
   },
   {
     id: "majlis-large-50",
-    name: "المجلس الملكي الكبير (يتسع لـ 50 شخص)",
+    name: "المجلس الكبير للمناسبات (50 شخص) مع حوض كبريتي",
+    originalSectionTitle: "مجلس كبير (50) شخص",
     category: "majlis",
     capacity: "حتى 50 شخص",
     pricePerDayYER: 95000,
     pricePerHourYER: 20000,
-    priceSAR: 650,
+    priceSAR: 660,
     bookingType: "both",
-    description: "مجلس فاخر جداً ومفروش بأصالة، مثالي للمناسبات العائلية، جلسات القات، العزائم، واللقاءات الكبيرة مع حوض مياه كبريتية كبير ملحق وإطلالة جبلية خلابة.",
+    description: "مجالس بإطلالة طبيعية هادئة تنبض بالراحة مع حوض كبريتي كبير ملحق. مصمم لاستقبال العزائم الكبيرة، اللقاءات العائلية وجلسات الضيافة الراقية.",
     amenities: [
-      "حوض مياه كبريتية ملحق واسع",
-      "إطلالة طبيعية مفتوحة على بلاد الروس",
-      "نظام صوت وشاشات عرض للمناسبات",
-      "بوفيه ومرافق ضيافة مجهزة",
-      "دورات مياه ومغاسل متعددة"
+      "حوض مياه كبريتية كبير ملحق بالمجلس",
+      "إطلالة مفتوحة على جبال حمام جارف",
+      "فرش أرضي فاخر ومريح للمناسبات",
+      "مرافق ضيافة ومغاسل ودورات مياه مستقلة",
+      "شاشات عرض ونظام صوتي متكامل"
     ],
     images: [
-      "/images/img_020_m49ej2lhke4k3pksihk8k2qj.jpeg",
-      "/images/img_033_v4doi9wx3r6e46eks0tl10gt.jpeg",
-      "/images/img_026_qksk02ao4vm2j1ymgq3kakia.jpeg"
+      "/images/units/majlis_50_panoramic_hall.jpeg",
+      "/images/units/majlis_50_thermal_basin.jpeg",
+      "/images/units/majlis_50_view.jpeg"
     ],
     featured: true,
     sizeM2: 180,
@@ -124,91 +134,119 @@ export const roomsData: RoomUnit[] = [
   },
   {
     id: "majlis-youth-30",
-    name: "مجلس شبابي مميز مع 2 جاكوزي (30 شخص)",
+    name: "مجلس شبابي حجم متوسط مع 2 جاكوزي (30 شخص)",
+    originalSectionTitle: "مجلس شبابي (30 شخص)",
     category: "majlis",
-    capacity: "20 إلى 30 شخص",
+    capacity: "25 إلى 35 شخص",
     pricePerDayYER: 60000,
     pricePerHourYER: 14000,
     priceSAR: 420,
     bookingType: "both",
-    description: "مجلس متوسط مريح ومجهز باثنين جاكوزي خاص للمياه الكبريتية، إضاءات مريحة وتكييف وشاشة ذكية لجلسات الأصدقاء واللمة الطيبة.",
+    description: "مجلس حجم متوسط مع اثنين جاكوزيهات للمياه الكبريتية. مناسب لجلسات الأصدقاء واللمة الطيبة بإطلالة هادئة وأجواء دافئة.",
     amenities: [
       "2 جاكوزي مياه كبريتية ملحقة",
-      "فرش أرضي يمني أصيل ومريح",
-      "شاشة تلفزيون ذكية وسماعات",
-      "مطبخ خدمة وسيرفيس ضيافة"
+      "جلسة أرضية يمنية أصيلة ومريحة",
+      "شاشة ذكية وسماعات وجلسة مكيفة",
+      "خدمة مشروبات وضيافة"
     ],
     images: [
-      "/images/img_025_qi4uk7rwji1rpygdt7gnup4l.jpeg",
-      "/images/img_005_adisjf12pxooe3kqknkwz8sa.jpeg",
-      "/images/img_018_ipp9q8iofmmkfm84nzep3abl.jpeg"
+      "/images/units/majlis_30_seating_jacuzzis.jpeg",
+      "/images/units/majlis_20_seating_jacuzzis.jpeg"
     ],
     availableCount: 3
   },
   {
-    id: "majlis-cozy-10",
-    name: "مجلس شبابي وعائلي صغير (10 أشخاص)",
+    id: "majlis-youth-20",
+    name: "مجلس شبابي مع 2 جاكوزي (20 شخص)",
+    originalSectionTitle: "مجلس شبابي ( 20شخص)",
+    category: "majlis",
+    capacity: "15 إلى 20 شخص",
+    pricePerDayYER: 50000,
+    pricePerHourYER: 11000,
+    priceSAR: 350,
+    bookingType: "both",
+    description: "مجلس شبابي مع اثنين جاكوزيهات مياه كبريتية دافئة. خصوصية كاملة وراحة واستجمام لجمعات الشباب والزملاء.",
+    amenities: [
+      "اثنين جاكوزي كبريتي دافئ",
+      "جلسة مريحة مكيفة ومجهزة",
+      "شاشة عرض وإنترنت سريع",
+      "مدخل خاص وخدمة سريعة"
+    ],
+    images: [
+      "/images/units/majlis_20_seating_jacuzzis.jpeg",
+      "/images/units/majlis_30_seating_jacuzzis.jpeg"
+    ],
+    availableCount: 3
+  },
+  {
+    id: "majlis-small-10",
+    name: "مجلس صغير هادئ (10 أشخاص) مع جاكوزي",
+    originalSectionTitle: "مجلس صغير (10) اشخاص",
     category: "majlis",
     capacity: "8 إلى 12 شخص",
     pricePerDayYER: 35000,
     pricePerHourYER: 7000,
-    priceSAR: 250,
+    priceSAR: 240,
     bookingType: "both",
-    description: "مجلس هادئ وملموم مصمم للراحة واللمة الحلوة، بجاكوزي كبريتي ونوافذ زجاجية تطل على الجبال.",
+    description: "مصمم للراحة واللمة الحلوة. مجلس هادئ ومريح يضم جاكوزي كبريتي خاص وإطلالة طبيعية على الجبال والينابيع.",
     amenities: [
-      "جاكوزي مياه دافئة استشفائية",
-      "جلسة أرضية هادئة ومكيفة",
-      "ثلاجة ومغسلة ملحقة",
-      "واي فاي سريع"
+      "جاكوزي مياه كبريتية مدمج",
+      "جلسة عائلية وشبابية ملمومة",
+      "نوافذ زجاجية تطل على الطبيعة",
+      "ثلاجة ومغاسل مستقلة"
     ],
     images: [
-      "/images/img_035_wgd00u886wkcan8u13vvdwht.jpeg",
-      "/images/img_009_dne1j2aqn48frhgum842ib4s.jpeg"
+      "/images/units/majlis_10_cozy_hall.jpeg",
+      "/images/units/majlis_10_jacuzzi.jpeg",
+      "/images/units/majlis_10_interior.jpeg",
+      "/images/units/majlis_10_window.jpeg"
     ],
     availableCount: 4
   },
   {
     id: "room-youth-cozy",
-    name: "غرفة نوم شبابية مع جاكوزي",
-    category: "youth",
+    name: "غرفة نوم شبابية مع جاكوزي خاص",
+    originalSectionTitle: "غرفة نوم شبابي",
+    category: "youth_room",
     capacity: "2 إلى 3 أشخاص",
     pricePerDayYER: 30000,
     pricePerHourYER: 6000,
     priceSAR: 210,
     bookingType: "both",
-    description: "إقامة شبابية راقية تجمع بين الراحة وسعر مناسب، مع جاكوزي كبريتي خاص لتجديد النشاط بعد جولة في المنطقة.",
+    description: "إقامة شبابية راقية تجمع الراحة ومتعة الجاكوزي الكبريتي الخاص. أسرة مريحة، تكييف، ودورة مياه مجهزة بأعلى درجات النظافة.",
     amenities: [
-      "جاكوزي كبريتي خاص",
-      "سريران مفردان أو سرير مزدوج",
-      "تكييف وتلفزيون وميني بار",
-      "حمام خاص ونظافة مستمرة"
+      "جاكوزي كبريتي استشفائي داخل الغرفة",
+      "أسرة مريحة بتجهيز فندقي",
+      "شاشة ذكية وواي فاي مجاني",
+      "خدمة غرف ونظافة دورية"
     ],
     images: [
-      "/images/img_038_zz87k50fvzpgny4q3z7p58qt.jpeg",
-      "/images/img_010_e1nyc37uylpit7l9nlnlrajx.jpeg"
+      "/images/units/youth_room_beds.jpeg",
+      "/images/units/youth_room_jacuzzi.jpeg",
+      "/images/units/youth_room_seating.jpeg"
     ],
     availableCount: 8
   },
   {
-    id: "pools-sulfur-private",
-    name: "مسبح كبريتي علاجي خاص (نظام ساعات)",
+    id: "pools-family-hours",
+    name: "مسابح عائلية كبريتية خاصة (نظام ساعات)",
+    originalSectionTitle: "مسابح عائلي - نظام ساعات",
     category: "pool",
-    capacity: "عائلي / خاص",
+    capacity: "عوائل ومجموعات خاصة",
     pricePerDayYER: 40000,
     pricePerHourYER: 8000,
     priceSAR: 180,
     bookingType: "hourly",
-    description: "أحواض ومسابح بمياه كبريتية حارة جارية مستمرة من المنبع الطبيعي مباشرة بحمام جارف، معقمة ومفيدة لآلام الظهر والمفاصل وتنشيط الدورة الدموية.",
+    description: "مسابح عائلية خاصة تعمل بنظام الساعات بمياه كبريتية جارية ومستمرة من منبع حمام جارف الطبيعي، مع خصوصية تامة للعائلات وتبديل مياه مستمر.",
     amenities: [
-      "مياه جارية حارة متجددة من المنبع",
-      "خصوصية مطلقة (أقسام عائلية وخاصة)",
-      "شاورات وتبديل ملابس معقم",
-      "جلسة استراحة جانبية"
+      "مياه كبريتية طبيعية دافئة متجددة من المنبع",
+      "خصوصية عائلية مغلقة 100%",
+      "غرف تبديل وشاورات معقمة",
+      "جلسات استراحة جانبية مريحة"
     ],
     images: [
-      "/images/img_016_i805mh07d9fdgoqi3q6vu17w.jpeg",
-      "/images/img_004_a6n8layuahfzwg3hvkbqrzks.jpeg",
-      "/images/img_023_oithe235k6q1xivx1ccsved0.jpeg"
+      "/images/units/pool_family_thermal_water.jpeg",
+      "/images/units/pool_family_cabin.jpeg"
     ],
     availableCount: 5
   }
