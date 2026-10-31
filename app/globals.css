@@ -36,7 +36,9 @@ html, body {
 
 .snap-section {
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
+  flex-shrink: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   position: relative;
@@ -58,6 +60,27 @@ html, body {
   background: rgba(212, 175, 55, 0.1);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+/* Luxury Royal Gold Styling */
+.gold-gradient-btn {
+  background: linear-gradient(135deg, #c59b27 0%, #f3e5ab 50%, #aa7c11 100%);
+  color: #05080c;
+  border: 1px solid rgba(245, 215, 127, 0.7);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+}
+
+.gold-gradient-btn:hover {
+  background: linear-gradient(135deg, #d4af37 0%, #fff2be 50%, #b8860b 100%);
+  box-shadow: 0 6px 28px rgba(212, 175, 55, 0.6);
+}
+
+.gold-text {
+  color: #e5c158;
+}
+
+.gold-glow {
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
 }
 
 /* Print styles for thermal POS receipts */

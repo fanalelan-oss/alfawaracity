@@ -6,6 +6,7 @@ import Link from "next/link";
 import SteamEffect from "./SteamEffect";
 import RoomDetailModal from "./RoomDetailModal";
 import { roomsData } from "@/data/roomsData";
+import { smoothScrollTo } from "@/lib/scroll";
 import { 
   Globe, 
   ChevronDown, 
@@ -30,14 +31,11 @@ export default function HeroSection() {
   const selectedUnit = roomsData.find(u => u.id === unitType) || roomsData[0];
 
   const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    smoothScrollTo(id);
   };
 
   return (
-    <section id="hero" className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-[#05080c] select-none">
+    <section id="hero" className="snap-section bg-[#05080c] select-none">
       {/* Background: Edge-to-Edge Full Bleed Cinematic Resort Landscape */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -138,7 +136,7 @@ export default function HeroSection() {
       {/* ========================================================================= */}
       {/* 2. HERO CENTER CONTENT (Headline + Floating Glass Booking Bar)            */}
       {/* ========================================================================= */}
-      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 w-full text-center my-auto py-12 space-y-8">
+      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 w-full text-center my-auto py-2 sm:py-6 space-y-4 sm:space-y-6">
         {/* Title (Matching Image 1) */}
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#080c10]/70 backdrop-blur-md border border-amber-500/40 text-amber-300 text-xs sm:text-sm font-bold shadow-xl">

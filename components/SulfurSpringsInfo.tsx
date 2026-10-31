@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import SteamEffect from "./SteamEffect";
+import { smoothScrollTo } from "@/lib/scroll";
 import { Droplets, Heart, Sparkles, Shield, ThermometerSun, Smile, ArrowDown } from "lucide-react";
 
 export default function SulfurSpringsInfo() {
@@ -38,8 +39,7 @@ export default function SulfurSpringsInfo() {
   ];
 
   const scrollToPayment = () => {
-    const el = document.getElementById("payment");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    smoothScrollTo("payment");
   };
 
   return (

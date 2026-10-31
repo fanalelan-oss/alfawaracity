@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { formatNumber } from "@/lib/formatters";
 import { RoomUnit, roomsData } from "@/data/roomsData";
+import { smoothScrollTo } from "@/lib/scroll";
 import RoomDetailModal from "./RoomDetailModal";
 import { 
   Users, 
@@ -34,8 +35,7 @@ export default function RoomsSection() {
   };
 
   const scrollToNext = () => {
-    const el = document.getElementById("sulfur");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    smoothScrollTo("sulfur");
   };
 
   return (

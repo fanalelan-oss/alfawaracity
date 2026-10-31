@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { hotelConfig } from "@/data/hotelConfig";
+import { smoothScrollTo } from "@/lib/scroll";
 import { 
   CreditCard, 
   Wallet, 
@@ -40,8 +41,7 @@ export default function PaymentGuide() {
   };
 
   const scrollToTop = () => {
-    const el = document.getElementById("hero");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    smoothScrollTo("hero");
   };
 
   return (

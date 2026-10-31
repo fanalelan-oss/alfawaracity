@@ -6,6 +6,7 @@ import SteamEffect from "./SteamEffect";
 import RoomDetailModal from "./RoomDetailModal";
 import { roomsData } from "@/data/roomsData";
 import { formatNumber } from "@/lib/formatters";
+import { smoothScrollTo } from "@/lib/scroll";
 import { 
   Compass, 
   Lightbulb, 
@@ -80,8 +81,7 @@ export default function Suite360Tour() {
   const currentUnit = roomsData.find(u => u.id === "suite-family-5") || roomsData[0];
 
   const scrollToNext = () => {
-    const el = document.getElementById("rooms");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    smoothScrollTo("rooms");
   };
 
   return (
@@ -125,25 +125,25 @@ export default function Suite360Tour() {
       {/* 3. Top Header Bar inside Scene */}
       <div className="relative z-30 w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between pointer-events-none">
         {/* Left: Brand Badge */}
-        <div className="pointer-events-auto flex items-center gap-2.5 bg-[#080c10]/85 backdrop-blur-xl px-4 py-2 rounded-2xl border border-amber-500/30 shadow-xl">
-          <div className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-xs">
+        <div className="pointer-events-auto flex items-center gap-2.5 bg-[#080c10]/85 backdrop-blur-xl px-4 py-2 rounded-2xl border border-[#d4af37]/40 shadow-xl shadow-black/80">
+          <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#c59b27] via-[#f3e5ab] to-[#aa7c11] text-slate-950 flex items-center justify-center font-black text-xs shadow-md">
             ف
           </div>
           <div>
             <div className="text-xs font-bold text-white">Alfawara Resort</div>
-            <div className="text-[10px] text-amber-300/80">فندق وشاليهات الفوارة</div>
+            <div className="text-[10px] text-[#e5c158]">فندق وشاليهات الفوارة</div>
           </div>
         </div>
 
         {/* Center: Interactive Hint */}
         <div className="hidden md:flex items-center gap-2 bg-[#080c10]/80 backdrop-blur-xl px-5 py-2 rounded-full border border-white/15 text-xs text-slate-200 shadow-xl">
-          <Compass className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: "14s" }} />
+          <Compass className="w-4 h-4 text-[#d4af37] animate-spin" style={{ animationDuration: "14s" }} />
           <span>اسحب بالماوس للتجول 360° داخل الجناح واكتشاف تفاصيل الجاكوزي</span>
         </div>
 
         {/* Right: Suite Title */}
-        <div className="pointer-events-auto bg-[#080c10]/85 backdrop-blur-xl px-4 sm:px-5 py-2 rounded-2xl border border-amber-500/40 text-xs sm:text-sm font-extrabold text-white flex items-center gap-2 shadow-xl">
-          <Sparkles className="w-4 h-4 text-amber-400" />
+        <div className="pointer-events-auto bg-[#080c10]/85 backdrop-blur-xl px-4 sm:px-5 py-2 rounded-2xl border border-[#d4af37]/50 text-xs sm:text-sm font-extrabold text-white flex items-center gap-2 shadow-xl shadow-black/80">
+          <Sparkles className="w-4 h-4 text-[#d4af37]" />
           <span>Royal VIP Suite (الجناح الملكي)</span>
         </div>
       </div>
@@ -171,9 +171,9 @@ export default function Suite360Tour() {
         >
           <button
             onClick={() => setActiveHotspotInfo("جاكوزي ملكي مدمج داخل الغرفة مع تحكم بدرجة التدفق ومقاعد استرخاء رخامية.")}
-            className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#080c10]/90 backdrop-blur-xl border border-amber-400/60 text-amber-300 text-xs font-bold shadow-2xl hover:scale-105 hover:bg-amber-950/90 transition-all"
+            className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#080c10]/90 backdrop-blur-xl border border-[#d4af37]/70 text-[#f5d77f] text-xs font-bold shadow-2xl hover:scale-105 hover:bg-[#c59b27]/30 transition-all shadow-[#d4af37]/20"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
             <span>جاكوزي ملكي خاص</span>
           </button>
         </div>
@@ -201,16 +201,16 @@ export default function Suite360Tour() {
             onClick={() => setActiveHotspotInfo("خدمة غرف على مدار الساعة، شبكة واي فاي عائلية سريعة، وشاشة ذكية 65 بوصة.")}
             className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#080c10]/90 backdrop-blur-xl border border-slate-300/40 text-slate-100 text-xs font-bold shadow-2xl hover:scale-105 hover:bg-slate-900 transition-all"
           >
-            <Wifi className="w-3.5 h-3.5 text-amber-300" />
+            <Wifi className="w-3.5 h-3.5 text-[#d4af37]" />
             <span>شبكة عائلية وخدمة VIP</span>
           </button>
         </div>
 
         {/* Active Hotspot Info Card if clicked */}
         {activeHotspotInfo && (
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-20 pointer-events-auto bg-[#0a1017]/95 backdrop-blur-2xl p-4 rounded-2xl border border-amber-500/40 shadow-2xl max-w-sm text-center space-y-2 z-40">
-            <div className="flex items-center justify-between text-xs text-amber-300 font-bold">
-              <span className="flex items-center gap-1.5"><Info className="w-4 h-4" /> ميزة الوحدة</span>
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-20 pointer-events-auto bg-[#0a1017]/95 backdrop-blur-2xl p-4 rounded-2xl border border-[#d4af37]/50 shadow-2xl max-w-sm text-center space-y-2 z-40">
+            <div className="flex items-center justify-between text-xs text-[#f3e5ab] font-bold">
+              <span className="flex items-center gap-1.5"><Info className="w-4 h-4 text-[#d4af37]" /> ميزة الوحدة</span>
               <button onClick={() => setActiveHotspotInfo(null)} className="text-slate-400 hover:text-white">
                 <X className="w-4 h-4" />
               </button>
@@ -262,7 +262,7 @@ export default function Suite360Tour() {
                     onClick={() => setSelectedDay(d)}
                     className={`py-1 rounded-lg transition-all ${
                       selectedDay === d
-                        ? "bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20"
+                        ? "bg-gradient-to-r from-[#c59b27] via-[#f3e5ab] to-[#aa7c11] text-slate-950 font-black shadow-md shadow-[#d4af37]/35 border border-[#f5d77f]/60"
                         : "text-slate-300 hover:bg-[#151f2e]"
                     }`}
                   >
@@ -275,7 +275,7 @@ export default function Suite360Tour() {
                     onClick={() => setSelectedDay(d)}
                     className={`py-1 rounded-lg transition-all ${
                       selectedDay === d
-                        ? "bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20"
+                        ? "bg-gradient-to-r from-[#c59b27] via-[#f3e5ab] to-[#aa7c11] text-slate-950 font-black shadow-md shadow-[#d4af37]/35 border border-[#f5d77f]/60"
                         : "text-slate-300 hover:bg-[#151f2e]"
                     }`}
                   >
@@ -321,17 +321,17 @@ export default function Suite360Tour() {
               <span className="text-slate-400">
                 {bookingType === "daily" ? "السعر لليلة:" : "السعر للساعة:"}
               </span>
-              <span className="font-extrabold text-amber-300 text-sm">
+              <span className="font-black text-[#f3e5ab] text-sm sm:text-base drop-shadow-[0_2px_8px_rgba(212,175,55,0.4)]">
                 {isMounted ? formattedPrice : `${formatNumber(basePriceYER)} YER`}
               </span>
             </div>
 
             <button
               onClick={() => setShowModal(true)}
-              className="w-full py-3 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-black text-sm rounded-xl shadow-lg shadow-amber-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 gold-gradient-btn font-black text-sm rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
               <span>تأكيد الحجز</span>
-              <Check className="w-4 h-4" />
+              <Check className="w-4 h-4 text-slate-950 stroke-[3]" />
             </button>
 
             {/* Local Payment Badges */}
@@ -344,7 +344,7 @@ export default function Suite360Tour() {
                 <span className="bg-[#121c29] px-2 py-0.5 rounded text-[10px] font-semibold text-cyan-400 border border-cyan-500/20">
                   محفظة جيب
                 </span>
-                <span className="bg-[#121c29] px-2 py-0.5 rounded text-[10px] font-semibold text-amber-300 border border-amber-500/20">
+                <span className="bg-[#121c29] px-2 py-0.5 rounded text-[10px] font-semibold text-[#e5c158] border border-[#d4af37]/30">
                   Mastercard
                 </span>
               </div>
@@ -358,21 +358,21 @@ export default function Suite360Tour() {
         {/* Bottom-Left 360 Controller & Light Switch */}
         <div className="pointer-events-auto flex items-center gap-3">
           {/* Circular 360 Compass with navigation arrows */}
-          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#080c10]/92 backdrop-blur-xl border border-white/20 shadow-2xl flex items-center justify-center">
-            <button onClick={() => nudgePan(0, 30)} className="absolute top-1 text-slate-400 hover:text-amber-400 p-1" title="أعلى">
+          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#080c10]/92 backdrop-blur-xl border border-[#d4af37]/35 shadow-2xl flex items-center justify-center">
+            <button onClick={() => nudgePan(0, 30)} className="absolute top-1 text-slate-400 hover:text-[#d4af37] p-1 transition-colors" title="أعلى">
               <ChevronUp className="w-4 h-4" />
             </button>
-            <button onClick={() => nudgePan(0, -30)} className="absolute bottom-1 text-slate-400 hover:text-amber-400 p-1" title="أسفل">
+            <button onClick={() => nudgePan(0, -30)} className="absolute bottom-1 text-slate-400 hover:text-[#d4af37] p-1 transition-colors" title="أسفل">
               <ChevronDown className="w-4 h-4" />
             </button>
-            <button onClick={() => nudgePan(35, 0)} className="absolute left-1 text-slate-400 hover:text-amber-400 p-1" title="يسار">
+            <button onClick={() => nudgePan(35, 0)} className="absolute left-1 text-slate-400 hover:text-[#d4af37] p-1 transition-colors" title="يسار">
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <button onClick={() => nudgePan(-35, 0)} className="absolute right-1 text-slate-400 hover:text-amber-400 p-1" title="يمين">
+            <button onClick={() => nudgePan(-35, 0)} className="absolute right-1 text-slate-400 hover:text-[#d4af37] p-1 transition-colors" title="يمين">
               <ChevronRight className="w-4 h-4" />
             </button>
             <div className="text-center pointer-events-none">
-              <div className="text-xs sm:text-sm font-black text-amber-300 tracking-wide">360°</div>
+              <div className="text-xs sm:text-sm font-black text-[#f3e5ab] tracking-wide">360°</div>
               <div className="text-[8px] text-slate-400 font-medium">جولة افتراضية</div>
             </div>
           </div>
@@ -382,23 +382,23 @@ export default function Suite360Tour() {
             onClick={() => setIsLightOn(!isLightOn)}
             className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl backdrop-blur-xl border flex flex-col items-center justify-center gap-0.5 transition-all shadow-xl ${
               isLightOn
-                ? "bg-amber-400/90 text-slate-950 border-amber-300 shadow-amber-400/30 scale-105"
+                ? "bg-gradient-to-b from-[#d4af37] via-[#f3e5ab] to-[#aa7c11] text-slate-950 border-[#f5d77f] shadow-[0_0_24px_rgba(212,175,55,0.6)] scale-105"
                 : "bg-[#080c10]/80 text-slate-400 border-white/20 hover:text-white"
             }`}
             title="تبديل إضاءة الغرفة"
           >
-            <Lightbulb className={`w-5 h-5 ${isLightOn ? "fill-slate-950" : ""}`} />
-            <span className="text-[8px] font-bold">تبديل الإضاءة</span>
+            <Lightbulb className={`w-5 h-5 ${isLightOn ? "fill-slate-950 text-slate-950 stroke-[2.5]" : ""}`} />
+            <span className="text-[8px] font-black">تبديل الإضاءة</span>
           </button>
         </div>
 
         {/* Scroll Down Hint with Pulsing Animation */}
         <button
           onClick={scrollToNext}
-          className="pointer-events-auto group flex items-center gap-2.5 bg-[#080c10]/85 backdrop-blur-xl hover:bg-amber-500/20 px-5 py-2.5 rounded-full border border-amber-500/40 text-amber-300 font-bold transition-all shadow-xl text-xs"
+          className="pointer-events-auto group flex items-center gap-2.5 bg-[#080c10]/85 backdrop-blur-xl hover:bg-[#d4af37]/15 px-5 py-2.5 rounded-full border border-[#d4af37]/45 text-[#f3e5ab] font-bold transition-all shadow-xl text-xs"
         >
           <span>مرر للأسفل لاستعراض كافة الأجنحة والمرافق</span>
-          <ArrowDown className="w-4 h-4 text-amber-400 animate-bounce" />
+          <ArrowDown className="w-4 h-4 text-[#d4af37] animate-bounce" />
         </button>
       </div>
 

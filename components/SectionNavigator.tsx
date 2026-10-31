@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { smoothScrollTo } from "@/lib/scroll";
 import { 
   Home, 
   Compass, 
   BedDouble, 
   Droplets, 
-  CreditCard,
-  ChevronUp,
-  ChevronDown
+  CreditCard 
 } from "lucide-react";
 
 export default function SectionNavigator() {
@@ -23,30 +22,33 @@ export default function SectionNavigator() {
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + window.innerHeight / 3;
-      for (const sec of sections) {
-        const el = document.getElementById(sec.id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(sec.id);
-            break;
-          }
-        }
-      }
-    };
+    const container = document.querySelector(".snap-container");
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: container || null,
+        threshold: 0.55
+      }
+    );
+
+    sections.forEach((sec) => {
+      const el = document.getElementById(sec.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+  const handleNavClick = (id: string) => {
+    setActiveSection(id);
+    smoothScrollTo(id);
   };
 
   return (
@@ -58,7 +60,7 @@ export default function SectionNavigator() {
         return (
           <button
             key={sec.id}
-            onClick={() => scrollToSection(sec.id)}
+            onClick={() => handleNavClick(sec.id)}
             className="group relative p-2.5 rounded-full transition-all"
             aria-label={sec.label}
           >
