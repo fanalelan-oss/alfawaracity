@@ -18,14 +18,16 @@ export default function SteamEffect({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     let animId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 800);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || 300);
+    let isVisible = true;
+    let width = (canvas.width = canvas.parentElement?.clientWidth || 600);
+    let h = (canvas.height = canvas.parentElement?.clientHeight || 250);
 
-    const particleCount = density === "low" ? 25 : density === "medium" ? 45 : 70;
+    // Optimized particle count (subtle, soft, 0% CPU lag)
+    const particleCount = density === "low" ? 12 : density === "medium" ? 20 : 28;
     const particles: Array<{
       x: number;
       y: number;
@@ -49,47 +51,45 @@ export default function SteamEffect({
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
-        y: height - Math.random() * (height * 0.7),
-        radius: 20 + Math.random() * 50,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: -0.3 - Math.random() * 0.6,
+        y: h - Math.random() * (h * 0.7),
+        radius: 25 + Math.random() * 45,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: -0.3 - Math.random() * 0.5,
         alpha: 0,
-        maxAlpha: 0.08 + Math.random() * 0.14,
-        growRate: 0.15 + Math.random() * 0.25,
+        maxAlpha: 0.06 + Math.random() * 0.08,
+        growRate: 0.12 + Math.random() * 0.18,
       });
     }
 
     const render = () => {
-      ctx.clearRect(0, 0, width, height);
+      if (!isVisible) return;
+      ctx.clearRect(0, 0, width, h);
 
       for (let p of particles) {
-        p.x += p.vx + Math.sin(p.y * 0.02) * 0.3;
+        p.x += p.vx + Math.sin(p.y * 0.02) * 0.2;
         p.y += p.vy;
         p.radius += p.growRate;
 
-        // Fade in when starting, fade out as it reaches the top
-        const lifeRatio = p.y / height;
+        const lifeRatio = p.y / h;
         if (lifeRatio > 0.6) {
-          p.alpha = Math.min(p.maxAlpha, p.alpha + 0.005);
+          p.alpha = Math.min(p.maxAlpha, p.alpha + 0.003);
         } else {
-          p.alpha = Math.max(0, p.maxAlpha * (p.y / (height * 0.6)));
+          p.alpha = Math.max(0, p.maxAlpha * (p.y / (h * 0.6)));
         }
 
-        // Reset particle if it drifted off top or sides
         if (p.y < -p.radius || p.alpha <= 0.001) {
           p.x = Math.random() * width;
-          p.y = height + 10;
-          p.radius = 20 + Math.random() * 40;
+          p.y = h + 10;
+          p.radius = 25 + Math.random() * 35;
           p.alpha = 0;
         }
 
-        // Draw radial steam puff
         const grad = ctx.createRadialGradient(
           p.x, p.y, p.radius * 0.1,
           p.x, p.y, p.radius
         );
         grad.addColorStop(0, `rgba(${rgb}, ${p.alpha})`);
-        grad.addColorStop(0.5, `rgba(${rgb}, ${p.alpha * 0.4})`);
+        grad.addColorStop(0.6, `rgba(${rgb}, ${p.alpha * 0.3})`);
         grad.addColorStop(1, `rgba(${rgb}, 0)`);
 
         ctx.fillStyle = grad;
@@ -101,24 +101,35 @@ export default function SteamEffect({
       animId = requestAnimationFrame(render);
     };
 
-    render();
+    // Pause when scrolled off screen
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) {
+        cancelAnimationFrame(animId);
+        animId = requestAnimationFrame(render);
+      } else {
+        cancelAnimationFrame(animId);
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(canvas);
 
     const handleResize = () => {
-      if (!canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
+      width = canvas.width = canvas.parentElement?.clientWidth || 600;
+      h = canvas.height = canvas.parentElement?.clientHeight || 250;
     };
     window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener("resize", handleResize);
     };
   }, [density, tint]);
 
   return (
-    <div className={`absolute inset-x-0 bottom-0 ${height} pointer-events-none overflow-hidden z-10`}>
-      <canvas ref={canvasRef} className="w-full h-full opacity-80" />
+    <div className={`pointer-events-none relative w-full ${height} overflow-hidden`}>
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </div>
   );
 }

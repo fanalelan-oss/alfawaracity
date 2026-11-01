@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { smoothScrollTo } from "@/lib/scroll";
 import { 
   Volume2, 
@@ -31,11 +31,11 @@ interface SceneInfo {
 }
 
 export default function ResortVideoTour() {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [activeSceneIndex, setActiveSceneIndex] = useState<number>(0);
   const [showHotspotDetail, setShowHotspotDetail] = useState<boolean>(false);
-  const [sceneProgress, setSceneProgress] = useState<number>(0);
 
   const scenes: SceneInfo[] = [
     {
@@ -115,14 +115,29 @@ export default function ResortVideoTour() {
     }
   ];
 
-  const activeScene = scenes[activeSceneIndex];
+  // Pause video when section is not in view to prevent any GPU/CPU lag
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
-  // Continuous video time update
-  const handleTimeUpdate = () => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!videoRef.current) return;
+      if (entry.isIntersecting) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }, { threshold: 0.25 });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  // Optimized lightweight scene detector: only changes state when entering a new scene
+  const handleTimeUpdate = useCallback(() => {
     if (!videoRef.current) return;
     const time = videoRef.current.currentTime;
 
-    // Find active scene
     let currentIdx = 0;
     for (let i = scenes.length - 1; i >= 0; i--) {
       if (time >= scenes[i].timeSec - 0.2) {
@@ -131,17 +146,15 @@ export default function ResortVideoTour() {
       }
     }
 
-    if (currentIdx !== activeSceneIndex) {
-      setActiveSceneIndex(currentIdx);
-      setShowHotspotDetail(false);
-    }
-
-    // Calculate progress within current scene (0 to 100%)
-    const sceneStart = scenes[currentIdx].timeSec;
-    const sceneDur = scenes[currentIdx].durationSec;
-    const prog = Math.min(100, Math.max(0, ((time - sceneStart) / sceneDur) * 100));
-    setSceneProgress(prog);
-  };
+    // Only trigger re-render if scene actually changed
+    setActiveSceneIndex((prev) => {
+      if (prev !== currentIdx) {
+        setShowHotspotDetail(false);
+        return currentIdx;
+      }
+      return prev;
+    });
+  }, [scenes]);
 
   const jumpToScene = (index: number) => {
     if (!videoRef.current) return;
@@ -165,13 +178,17 @@ export default function ResortVideoTour() {
     setIsMuted(!isMuted);
   };
 
+  const activeScene = scenes[activeSceneIndex];
+
   return (
     <section 
+      ref={sectionRef}
       id="resort-tour" 
       className="snap-section bg-[#05080c] select-none flex flex-col justify-between"
+      style={{ contain: "paint" }}
     >
-      {/* 1. Full-Bleed Background Video (Clean, no bars) */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* 1. Full-Bleed Video (Hardware Accelerated) */}
+      <div className="absolute inset-0 z-0 overflow-hidden transform-gpu">
         <video
           ref={videoRef}
           src="/videos/resort_walkthrough.mp4"
@@ -179,12 +196,13 @@ export default function ResortVideoTour() {
           muted={isMuted}
           playsInline
           autoPlay
+          preload="metadata"
           onTimeUpdate={handleTimeUpdate}
-          className="w-full h-full object-cover object-center filter brightness-[0.94] contrast-[1.04]"
+          className="w-full h-full object-cover object-center"
         />
-        {/* Cinematic Vignette & Readability Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#05080c]/90 via-transparent to-[#05080c]/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-black/50 pointer-events-none" />
+        {/* Crisp Dark Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-black/20 to-[#05080c]/75 pointer-events-none" />
+        <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/50 pointer-events-none" />
       </div>
 
       {/* ========================================================================= */}
@@ -192,8 +210,8 @@ export default function ResortVideoTour() {
       {/* ========================================================================= */}
       <header className="relative z-30 w-full max-w-7xl mx-auto px-6 sm:px-10 py-5 flex items-center justify-between pointer-events-none">
         {/* Right in RTL: Official Resort Logo */}
-        <div className="pointer-events-auto flex items-center gap-3 bg-black/30 backdrop-blur-xl px-4 py-2 rounded-2xl border border-white/15 shadow-xl shadow-black/50">
-          <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#00b4d8] to-[#0077b6] text-white flex items-center justify-center font-bold text-xs shadow-md">
+        <div className="pointer-events-auto flex items-center gap-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 shadow-lg">
+          <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#00b4d8] to-[#0077b6] text-white flex items-center justify-center font-bold text-xs shadow">
             ف
           </div>
           <div className="text-right">
@@ -203,10 +221,9 @@ export default function ResortVideoTour() {
         </div>
 
         {/* Center: Clean Progress Segmented Story Bars (5 Stages) */}
-        <div className="pointer-events-auto flex items-center gap-2 bg-black/30 backdrop-blur-xl px-4 py-2 rounded-full border border-white/15 shadow-xl shadow-black/50">
+        <div className="pointer-events-auto flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-lg">
           {scenes.map((sc, idx) => {
             const isCurrent = activeSceneIndex === idx;
-            const isPassed = activeSceneIndex > idx;
 
             return (
               <button
@@ -215,15 +232,13 @@ export default function ResortVideoTour() {
                 className="group flex items-center gap-1.5 focus:outline-none"
                 title={sc.title}
               >
-                {/* Story-like progress bar segment */}
-                <div className="relative w-8 sm:w-12 h-1 rounded-full bg-white/20 overflow-hidden">
-                  <div
-                    className="absolute inset-y-0 right-0 bg-gradient-to-l from-[#d4af37] to-[#f3e5ab] transition-all duration-150"
-                    style={{
-                      width: isCurrent ? `${sceneProgress}%` : isPassed ? "100%" : "0%"
-                    }}
-                  />
-                </div>
+                <div 
+                  className={`w-7 sm:w-11 h-1.5 rounded-full transition-all duration-300 ${
+                    isCurrent 
+                      ? "bg-gradient-to-l from-[#d4af37] to-[#f3e5ab] shadow-[0_0_8px_rgba(212,175,55,0.7)] scale-105" 
+                      : "bg-white/20 hover:bg-white/40"
+                  }`} 
+                />
                 <span className={`text-[10px] font-mono transition-colors ${isCurrent ? "text-[#f3e5ab] font-bold" : "text-slate-400 group-hover:text-white"}`}>
                   {sc.num}
                 </span>
@@ -236,7 +251,7 @@ export default function ResortVideoTour() {
         <div className="pointer-events-auto flex items-center gap-2">
           <button
             onClick={toggleMute}
-            className="w-10 h-10 rounded-2xl bg-black/30 hover:bg-black/50 backdrop-blur-xl border border-white/15 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-xl shadow-black/50"
+            className="w-10 h-10 rounded-2xl bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-lg"
             title={isMuted ? "تشغيل صوت الأجواء" : "كتم الصوت"}
           >
             {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-[#d4af37]" />}
@@ -250,14 +265,12 @@ export default function ResortVideoTour() {
       <div className="relative z-20 flex-1 w-full max-w-7xl mx-auto px-6 pointer-events-none flex items-center justify-center">
         <div 
           style={{ top: activeScene.hotspot.top, left: activeScene.hotspot.left }}
-          className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto transition-all duration-700 ease-out"
+          className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto transition-all duration-500 ease-out"
         >
           <button
             onClick={() => setShowHotspotDetail(!showHotspotDetail)}
-            className="group relative flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/35 backdrop-blur-xl border border-[#d4af37]/70 text-[#f3e5ab] text-xs font-extrabold shadow-2xl hover:scale-105 hover:bg-black/60 transition-all shadow-[#d4af37]/20"
+            className="group relative flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-[#d4af37]/70 text-[#f3e5ab] text-xs font-extrabold shadow-xl hover:scale-105 hover:bg-black/70 transition-all shadow-[#d4af37]/20"
           >
-            {/* Animated Radar Pulse Ring */}
-            <span className="absolute -inset-1 rounded-full border border-[#d4af37]/40 animate-ping pointer-events-none" />
             <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse" />
             <Eye className="w-3.5 h-3.5 text-[#d4af37]" />
             <span>{activeScene.hotspot.label}</span>
@@ -265,7 +278,7 @@ export default function ResortVideoTour() {
 
           {/* Interactive Popover Modal */}
           {showHotspotDetail && (
-            <div className="absolute right-0 top-full mt-2 w-72 bg-black/50 backdrop-blur-2xl border border-white/20 rounded-2xl p-4 text-right space-y-2 shadow-2xl shadow-black/95 z-50 animate-fade-in">
+            <div className="absolute right-0 top-full mt-2 w-72 bg-black/70 backdrop-blur-xl border border-white/20 rounded-2xl p-4 text-right space-y-2 shadow-2xl z-50 animate-fade-in">
               <div className="flex items-center justify-between text-xs text-[#f3e5ab] font-bold pb-1.5 border-b border-white/10">
                 <span className="flex items-center gap-1.5">
                   <Droplets className="w-3.5 h-3.5 text-cyan-400" />
@@ -298,7 +311,7 @@ export default function ResortVideoTour() {
       <div className="relative z-30 w-full max-w-7xl mx-auto px-6 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4 pointer-events-none">
         
         {/* Right in RTL: THE ONE DYNAMIC FLOATING GLASS CARD (CRYSTAL TRANSPARENT) */}
-        <div className="pointer-events-auto max-w-md w-full bg-black/35 backdrop-blur-2xl border border-white/20 rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.6)] text-right space-y-2.5 transition-all duration-500 animate-fade-in">
+        <div className="pointer-events-auto max-w-md w-full bg-black/45 backdrop-blur-xl border border-white/15 rounded-3xl p-5 shadow-2xl text-right space-y-2.5 transition-all duration-300">
           
           {/* Card Top: Stage Number & Navigation arrows */}
           <div className="flex items-center justify-between">
@@ -336,12 +349,12 @@ export default function ResortVideoTour() {
           </div>
 
           {/* Description */}
-          <p className="text-xs text-slate-200 leading-relaxed drop-shadow-sm">
+          <p className="text-xs text-slate-200 leading-relaxed">
             {activeScene.desc}
           </p>
 
           {/* Direct WhatsApp Booking button */}
-          <div className="pt-1.5 border-t border-white/15 flex items-center justify-between">
+          <div className="pt-1.5 border-t border-white/10 flex items-center justify-between">
             <span className="text-[10px] text-emerald-300 font-semibold flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               متاح للزيارة والحجز اليومي
@@ -363,7 +376,7 @@ export default function ResortVideoTour() {
         <div className="pointer-events-auto">
           <button
             onClick={() => smoothScrollTo("suite-360")}
-            className="group flex items-center gap-2.5 bg-black/30 backdrop-blur-xl hover:bg-[#d4af37]/20 px-5 py-2.5 rounded-full border border-white/20 text-[#f3e5ab] font-bold transition-all shadow-xl text-xs hover:scale-105 active:scale-95 shadow-black/60"
+            className="group flex items-center gap-2.5 bg-black/40 backdrop-blur-md hover:bg-[#d4af37]/20 px-5 py-2.5 rounded-full border border-white/20 text-[#f3e5ab] font-bold transition-all shadow-xl text-xs hover:scale-105 active:scale-95"
           >
             <span>انتقل إلى جولة الجناح الملكي والجاكوزي 360°</span>
             <ArrowDown className="w-4 h-4 text-[#d4af37] group-hover:translate-y-1 transition-transform" />

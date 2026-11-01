@@ -22,12 +22,14 @@ html, body {
 /* Full-Page Snap Scroll Architecture */
 .snap-container {
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  will-change: scroll-position;
 }
 
 .snap-container::-webkit-scrollbar {
@@ -46,6 +48,8 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Glassmorphism helpers */
