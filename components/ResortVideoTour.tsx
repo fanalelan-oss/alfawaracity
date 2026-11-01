@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { smoothScrollTo } from "@/lib/scroll";
 import { 
   Volume2, 
@@ -31,7 +31,6 @@ interface SceneInfo {
 }
 
 export default function ResortVideoTour() {
-  const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [activeSceneIndex, setActiveSceneIndex] = useState<number>(0);
@@ -115,51 +114,48 @@ export default function ResortVideoTour() {
     }
   ];
 
-  // Pause video when section is not in view to prevent any GPU/CPU lag
+  // Guaranteed continuous playback without pausing or interruptions
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const vid = videoRef.current;
+    if (!vid) return;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!videoRef.current) return;
-      if (entry.isIntersecting) {
-        videoRef.current.play().catch(() => {});
-      } else {
-        videoRef.current.pause();
+    vid.muted = true;
+    vid.defaultMuted = true;
+    
+    const playSafe = () => {
+      vid.play().catch(() => {});
+    };
+
+    playSafe();
+    vid.addEventListener("canplay", playSafe);
+    vid.addEventListener("loadeddata", playSafe);
+
+    // Keep active scene synchronized smoothly every 350ms
+    const timer = setInterval(() => {
+      if (vid.paused && vid.readyState >= 2) {
+        playSafe();
       }
-    }, { threshold: 0.25 });
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  // Optimized lightweight scene detector: only changes state when entering a new scene
-  const handleTimeUpdate = useCallback(() => {
-    if (!videoRef.current) return;
-    const time = videoRef.current.currentTime;
-
-    let currentIdx = 0;
-    for (let i = scenes.length - 1; i >= 0; i--) {
-      if (time >= scenes[i].timeSec - 0.2) {
-        currentIdx = i;
-        break;
+      const time = vid.currentTime;
+      let currentIdx = 0;
+      for (let i = scenes.length - 1; i >= 0; i--) {
+        if (time >= scenes[i].timeSec - 0.2) {
+          currentIdx = i;
+          break;
+        }
       }
-    }
+      setActiveSceneIndex((prev) => (prev !== currentIdx ? currentIdx : prev));
+    }, 350);
 
-    // Only trigger re-render if scene actually changed
-    setActiveSceneIndex((prev) => {
-      if (prev !== currentIdx) {
-        setShowHotspotDetail(false);
-        return currentIdx;
-      }
-      return prev;
-    });
+    return () => {
+      clearInterval(timer);
+      vid.removeEventListener("canplay", playSafe);
+      vid.removeEventListener("loadeddata", playSafe);
+    };
   }, [scenes]);
 
   const jumpToScene = (index: number) => {
     if (!videoRef.current) return;
-    const targetSec = scenes[index].timeSec;
-    videoRef.current.currentTime = targetSec;
+    videoRef.current.currentTime = scenes[index].timeSec;
     setActiveSceneIndex(index);
     setShowHotspotDetail(false);
   };
@@ -174,35 +170,33 @@ export default function ResortVideoTour() {
 
   const toggleMute = () => {
     if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
+    const newMuted = !isMuted;
+    videoRef.current.muted = newMuted;
+    setIsMuted(newMuted);
   };
 
   const activeScene = scenes[activeSceneIndex];
 
   return (
     <section 
-      ref={sectionRef}
       id="resort-tour" 
       className="snap-section bg-[#05080c] select-none flex flex-col justify-between"
-      style={{ contain: "paint" }}
     >
-      {/* 1. Full-Bleed Video (Hardware Accelerated) */}
-      <div className="absolute inset-0 z-0 overflow-hidden transform-gpu">
+      {/* 1. Full-Bleed Video (Ultra-fast 3MB FastStart MP4) */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <video
           ref={videoRef}
           src="/videos/resort_walkthrough.mp4"
-          loop
-          muted={isMuted}
-          playsInline
           autoPlay
-          preload="metadata"
-          onTimeUpdate={handleTimeUpdate}
-          className="w-full h-full object-cover object-center"
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover object-center pointer-events-none"
         />
-        {/* Crisp Dark Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-black/20 to-[#05080c]/75 pointer-events-none" />
-        <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/50 pointer-events-none" />
+        {/* Subtle Dark Gradient Overlays for Pure Readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#05080c] via-black/15 to-[#05080c]/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/45 pointer-events-none" />
       </div>
 
       {/* ========================================================================= */}
@@ -278,7 +272,7 @@ export default function ResortVideoTour() {
 
           {/* Interactive Popover Modal */}
           {showHotspotDetail && (
-            <div className="absolute right-0 top-full mt-2 w-72 bg-black/70 backdrop-blur-xl border border-white/20 rounded-2xl p-4 text-right space-y-2 shadow-2xl z-50 animate-fade-in">
+            <div className="absolute right-0 top-full mt-2 w-72 bg-black/85 backdrop-blur-xl border border-white/20 rounded-2xl p-4 text-right space-y-2 shadow-2xl z-50 animate-fade-in">
               <div className="flex items-center justify-between text-xs text-[#f3e5ab] font-bold pb-1.5 border-b border-white/10">
                 <span className="flex items-center gap-1.5">
                   <Droplets className="w-3.5 h-3.5 text-cyan-400" />
@@ -354,7 +348,7 @@ export default function ResortVideoTour() {
           </p>
 
           {/* Direct WhatsApp Booking button */}
-          <div className="pt-1.5 border-t border-white/10 flex items-center justify-between">
+          <div className="pt-1.5 border-t border-white/15 flex items-center justify-between">
             <span className="text-[10px] text-emerald-300 font-semibold flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               متاح للزيارة والحجز اليومي
