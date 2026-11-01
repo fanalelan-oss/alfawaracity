@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { smoothScrollTo } from "@/lib/scroll";
 import { 
   Home, 
+  Video,
   Compass, 
   BedDouble, 
   Droplets, 
@@ -15,6 +16,7 @@ export default function SectionNavigator() {
 
   const sections = [
     { id: "hero", label: "الرئيسية والواحة", icon: Home },
+    { id: "resort-tour", label: "جولة المنتجع بالفيديو الحي", icon: Video },
     { id: "suite-360", label: "جولة الجناح الملكي 360°", icon: Compass },
     { id: "rooms", label: "الأجنحة والمرافق", icon: BedDouble },
     { id: "sulfur", label: "المياه الكبريتية", icon: Droplets },

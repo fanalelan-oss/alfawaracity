@@ -226,11 +226,11 @@ export default function HeroSection() {
         </div>
 
         <button
-          onClick={() => scrollToSection("suite-360")}
-          className="group flex items-center gap-2 bg-[#080c10]/80 backdrop-blur-md hover:bg-amber-500/20 px-5 py-2 rounded-full border border-amber-500/40 text-amber-300 font-bold transition-all shadow-lg"
+          onClick={() => scrollToSection("resort-tour")}
+          className="group flex items-center gap-2 bg-[#080c10]/85 backdrop-blur-md hover:bg-[#d4af37]/20 px-5 py-2 rounded-full border border-[#d4af37]/50 text-[#f3e5ab] font-bold transition-all shadow-lg hover:scale-105 active:scale-95"
         >
-          <span>استكشف الجناح الملكي والجاكوزي 360°</span>
-          <ArrowDown className="w-4 h-4 text-amber-400 group-hover:translate-y-1 transition-transform" />
+          <span>جولة حقيقية في المنتجع بالفيديو الحي</span>
+          <ArrowDown className="w-4 h-4 text-[#d4af37] group-hover:translate-y-1 transition-transform" />
         </button>
       </div>
 
